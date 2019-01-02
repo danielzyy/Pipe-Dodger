@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/scoreLabel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Score : 0"
+        android:textSize="18sp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"/>
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--android:background="#000000"-->
+
+        <TextView
+            android:id="@+id/pointCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="0"
+            android:textSize="220dp" />
+        <TextView
+            android:id="@+id/startLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap to Begin"
+            android:textSize="30sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="130dp"/>
+        <ImageView
+            android:id="@+id/box"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/square"
+            android:layout_gravity="center_vertical"/>
+        <ImageView
+            android:id="@+id/bottomPipe"
+            android:layout_width="wrap_content"
+            android:layout_height="600dp"
+            android:layout_gravity="right"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/bottompipe" />
+        <ImageView
+            android:id="@+id/topPipe"
+            android:layout_width="wrap_content"
+            android:layout_height="600dp"
+            android:layout_gravity="right"
+            android:adjustViewBounds="true"
+            android:layout_margin="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/toppipe"/>
+        <ImageView
+            android:id="@+id/slowBonus"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/slow"/>
+        <ImageView
+            android:id="@+id/gapBonus"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/gap"/>
+        <ImageView
+            android:id="@+id/pointsBonus"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/points"/>
+
+
+    </FrameLayout>
+</LinearLayout>
