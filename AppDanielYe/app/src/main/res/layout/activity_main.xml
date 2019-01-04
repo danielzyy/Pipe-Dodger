@@ -37,8 +37,8 @@
             android:layout_marginTop="130dp"/>
         <ImageView
             android:id="@+id/box"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/square"
             android:layout_gravity="center_vertical"/>
         <ImageView
