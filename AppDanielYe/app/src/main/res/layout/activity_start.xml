@@ -15,14 +15,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bonuses:"
+        android:text="Boosts(Active for 3 pipes):"
         android:textStyle="bold"
         android:textSize="25sp"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="20dp"/>
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="10dp">
 
         <TableRow
             android:gravity="center_vertical">
@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Slows down next 3 pipes"
+                android:text="Slows down pipes"
                 android:textSize="19sp"
                 android:paddingLeft="10dp"/>
         </TableRow>
@@ -47,12 +47,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Increases gap between next 3 pipes"
+                android:text="Increases gap between pipes"
                 android:textSize="19sp"
                 android:paddingLeft="10dp"/>
         </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bonus:"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"/>
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
         <TableRow
-            android:layout_marginTop="20dp"
             android:gravity="center_vertical">
             <ImageView
                 android:layout_width="25dp"
