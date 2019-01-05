@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView startLabel;
     private TextView pointCounter;
     private ImageView box;
+    private ImageView crash;
     private ImageView bottomPipe;
     private ImageView topPipe;
     private ImageView[] bonuses;
@@ -27,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private int numOfBonuses;
     // Size
     private int frameHeight;
-    private int boxSize;
+    private int boxHeight;
+    private int boxWidth;
     private int screenWidth;
     private int screenHeight;
     private float gapWidth;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private float pipeSpeed;
     private float bonusYSpeed;
     private float gapYSpeed;
+    private float crashSpeed;
     // Initialize Class
     private Handler handler;
     private Timer timer;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean action_flg = false;
     private boolean start_flg = false;
     private boolean pipe_reset = false;
+    private boolean crashed = false;
     //bonus
     private double randomBonus;
     private int bonusCounter;
@@ -73,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         //hide pointCounter
         pointCounter.setVisibility(View.INVISIBLE);
         box = (ImageView) findViewById(R.id.box);
+        crash = (ImageView) findViewById(R.id.crash);
+        crash.setVisibility(View.INVISIBLE);
         topPipe = (ImageView) findViewById(R.id.topPipe);
         bottomPipe = (ImageView) findViewById(R.id.bottomPipe);
         numOfBonuses = 3;
@@ -91,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = size.y;
         pipeSpeed = screenWidth / 250;
         bonusYSpeed = screenHeight / 500;
-        gapYSpeed = screenHeight / 880;
-        gapWidth = screenHeight/8;
+        crashSpeed = screenHeight / 500;
+        gapYSpeed = screenHeight / 920;
+        gapWidth = (float)(screenHeight/8);
         boxX = screenWidth / 5;
 //        Log.v("height",screenHeight+"");
 //        Log.v("gap",gapWidth+"");
@@ -113,111 +120,120 @@ public class MainActivity extends AppCompatActivity {
     }
     public void changePos() {
         hitCheck();
-        //move bonus
-        Log.v("bonus:", chosenBonus + "");
-        if (chosenBonus>=0) {
-            if (score>10) {
-                //move bonus up and down only after 10 points
-                bonusY += bonusYSpeed;
-                if (bonusY > frameHeight - bonuses[0].getHeight()) {
-                    bonusY = frameHeight - bonuses[0].getHeight();
-                    bonusYSpeed *= -1;
-                } else if (bonusY < 0) {
-                    bonusY = 0;
-                    bonusYSpeed *= -1;
+        if (crashed==true) {
+            boxY+=crashSpeed*1.3;
+            if (boxY+boxHeight>=frameHeight) {
+                boxY=frameHeight-boxHeight;
+            }
+            crash.setY(boxY);
+        } else {
+            //move bonus
+            Log.v("bonus:", chosenBonus + "");
+            if (chosenBonus >= 0) {
+                if (score >= 10) {
+                    //move bonus up and down only after 10 points
+                    bonusY += bonusYSpeed;
+                    if (bonusY > frameHeight - bonuses[0].getHeight()) {
+                        bonusY = frameHeight - bonuses[0].getHeight();
+                        bonusYSpeed *= -1;
+                    } else if (bonusY < 0) {
+                        bonusY = 0;
+                        bonusYSpeed *= -1;
+                    }
+                }
+                //move bonus left until it reaches the end of the screen
+                if (bonusX <= -bonusSize) {
+                    bonusX = screenWidth;
+                    bonuses[chosenBonus].setX(bonusX);
+                    chosenBonus = -1;
+                } else {
+                    bonusX -= pipeSpeed;
+                    bonuses[chosenBonus].setX(bonusX);
+                    bonuses[chosenBonus].setY(bonusY);
                 }
             }
-            //move bonus left until it reaches the end of the screen
-            if (bonusX <= -bonusSize) {
-                bonusX = screenWidth;
-                bonuses[chosenBonus].setX(bonusX);
-                chosenBonus = -1;
-            } else {
-                bonusX-=pipeSpeed;
+            //increase score count when pipes pass box
+            if (pipe_reset == false && pipeX + bottomPipe.getWidth() < boxX) {
+                score++;
+                scoreLabel.setText("Score : " + score);
+                pointCounter.setText("" + score);
+                pipe_reset = true;
+            }
+            // move top and bottom pipe to the edge
+            pipeX -= pipeSpeed;
+            if (pipeX < -bottomPipe.getWidth()) {
+                pipe_reset = false;
+                //keeping track of the duration of each bonus
+                if (bonusCounter != -1) {
+                    bonusCounter++;
+                    if (prevBonus == 0 && bonusCounter == 3) { //gap bonus active
+                        gapWidth /= 1.1;
+                        prevBonus = -1;
+                        bonusCounter = -1;
+                    } else if (prevBonus == 1 && bonusCounter == 3) { //slow bonus active
+                        pipeSpeed /= 0.75;
+                        gapYSpeed /= 0.75;
+                        prevBonus = -1;
+                        bonusCounter = -1;
+                    }
+                }
+                //increase speed of pipes and decrease gapWidth every 10 points
+                if (score > 0 && score % 10 == 0) {
+                    pipeSpeed *= 1.08;
+                    gapWidth *= 0.9;
+                    if (gapWidth < boxHeight) {
+                        gapWidth = boxHeight;
+                    }
+                }
+                pipeX = screenWidth + bottomPipe.getWidth();
+                //choose random y-value for gap, and add 0.7 gapWidth padding on each side so gap dosent go on edge
+                gapY = (int) (Math.random() * (frameHeight - 2.4 * gapWidth) + 0.7 * gapWidth);
+                randomBonus = Math.random();
+            }
+            if (score % 10 == 0 && score > 0) {
+                if (randomBonus < 0.5)
+                    gapY += gapYSpeed;
+                else
+                    gapY -= gapYSpeed;
+                if (gapY > frameHeight - gapWidth) {
+                    gapY = frameHeight - gapWidth;
+                    gapYSpeed *= -1;
+                } else if (gapY < 0) {
+                    gapY = 0;
+                    gapYSpeed *= -1;
+                }
+            }
+            topPipeY = gapY - topPipe.getHeight();
+            bottomPipeY = gapY + gapWidth;
+            bottomPipe.setX(pipeX);
+            bottomPipe.setY(bottomPipeY);
+            topPipe.setX(pipeX);
+            topPipe.setY(topPipeY);
+            //spawn bonus randomly. 60% chance of spawning every 5 points
+            if (score > 0 && score % 5 == 0 && pipeX <= screenWidth / 2 && pipeX > boxX + boxWidth && chosenBonus == -1 && randomBonus < 0.6) {
+                chosenBonus = (int) (Math.random() * numOfBonuses);
+                bonusY = (float) (Math.random() * (frameHeight - bonusSize));
                 bonuses[chosenBonus].setX(bonusX);
                 bonuses[chosenBonus].setY(bonusY);
             }
-        }
-        //increase score count when pipes pass box
-        if(pipe_reset==false && pipeX+bottomPipe.getWidth()<boxX) {
-            score++;
-            scoreLabel.setText("Score : " + score);
-            pointCounter.setText("" + score);
-            pipe_reset=true;
-        }
-        // move top and bottom pipe to the edge
-        pipeX -= pipeSpeed;
-        if (pipeX < -bottomPipe.getWidth()) {
-            pipe_reset = false;
-            //keeping track of the duration of each bonus
-            if (bonusCounter!=-1) {
-                bonusCounter++;
-                if (prevBonus==0&&bonusCounter==3) { //gap bonus active
-                    gapWidth /= 1.1;
-                    prevBonus = -1;
-                    bonusCounter = -1;
-                } else if (prevBonus==1&&bonusCounter==3) { //slow bonus active
-                    pipeSpeed/=0.75;
-                    gapYSpeed/=0.75;
-                    prevBonus = -1;
-                    bonusCounter = -1;
+            // Move Box
+            if (action_flg && finalY != 0 && initialY != 0) {
+                diff = finalY - initialY;
+                //increase sensitivity for touch movement
+                diff *= 1.5;
+                if (diff != prevDiff) {
+                    boxY += diff;
+                    if (boxY < 0) boxY = 0;
+                    if (boxY > frameHeight - boxHeight) boxY = frameHeight - boxHeight;
+                    box.setY(boxY);
+                    prevDiff = diff;
                 }
-            }
-            //increase speed of pipes and decrease gapWidth every 7 points
-            if (score > 7 && score % 7 == 1) {
-                pipeSpeed *= 1.05;
-                gapWidth *= 0.96;
-            }
-            pipeX = screenWidth + 20;
-            //choose random y-value for gap, and add 0.7 gapWidth padding on each side so gap dosent go on edge
-            gapY = (int) (Math.random() * (frameHeight - 2.4 * gapWidth) + 0.7 * gapWidth);
-            randomBonus = Math.random();
-        }
-        if (score%5==0&&score>0) {
-            if(randomBonus<0.5)
-                gapY+=gapYSpeed;
-            else
-                gapY-=gapYSpeed;
-            if (gapY > frameHeight - gapWidth) {
-                gapY = frameHeight - gapWidth;
-                gapYSpeed *= -1;
-            } else if (gapY < 0) {
-                gapY = 0;
-                gapYSpeed *= -1;
-            }
-        }
-        topPipeY = gapY - topPipe.getHeight();
-        bottomPipeY = gapY + gapWidth;
-        bottomPipe.setX(pipeX);
-        bottomPipe.setY(bottomPipeY);
-        topPipe.setX(pipeX);
-        topPipe.setY(topPipeY);
-        //spawn bonus randomly. 60% chance of spawning every 5 points
-        if (score>0&&score%5==0&&pipeX<=screenWidth/2&&chosenBonus==-1&&randomBonus<0.6) {
-            chosenBonus = (int)(Math.random()*numOfBonuses);
-            bonusY = (float)(Math.random()*(frameHeight-bonusSize));
-            bonuses[chosenBonus].setX(bonusX);
-            bonuses[chosenBonus].setY(bonusY);
-        }
-        // Move Box
-        if (action_flg && finalY != 0 && initialY != 0) {
-            diff = finalY - initialY;
-            //increase sensitivity for touch movement
-            diff *= 1.5;
-            if (diff != prevDiff) {
-                boxY += diff;
-                if (boxY < 0) boxY = 0;
-                if (boxY > frameHeight - boxSize) boxY = frameHeight - boxSize;
-                box.setY(boxY);
-                prevDiff = diff;
             }
         }
     }
-    public void hitCheck() {
-        // If the edge of the box hits the pipe, game over.
-        float topPipeEdge = topPipeY+topPipe.getHeight();
-        float bottomPipeEdge = bottomPipeY;
-        if ((boxY<=topPipeEdge||boxY>=bottomPipeEdge-boxSize)&&pipeX<=0+boxX&&boxX<=pipeX+bottomPipe.getWidth()) {
+    public void hitCheck()   {
+        //once crashed bird reached bottom of screen, go to results page
+        if (crashed==true && boxY+boxHeight==frameHeight) {
             // Stop Timer!!
             if (timer!=null)
                 timer.cancel();
@@ -227,11 +243,22 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("SCORE", score);
             startActivity(intent);
         }
+        float topPipeEdge = topPipeY+topPipe.getHeight();
+        float bottomPipeEdge = bottomPipeY;
+        // If the edge of the box hits the pipe, game over.
+        if ((boxY<=topPipeEdge||boxY>=bottomPipeEdge-boxHeight)&&pipeX<=0+boxX&&boxX<=pipeX+bottomPipe.getWidth()&&crashed==false) {
+            //switch bird avatars
+            crash.setX(box.getX());
+            crash.setY(box.getY());
+            boxY = crash.getY();
+            box.setVisibility(View.INVISIBLE);
+            crash.setVisibility(View.VISIBLE);
+            crashed=true;
+        }
         //check for bonus hits
-        if (chosenBonus>=0 && ((bonusX<=boxX+boxSize && bonusX>=boxX)||(bonusX+bonusSize<=boxX+boxSize && bonusX+bonusSize>=boxX))) {
+        if (chosenBonus>=0 && ((bonusX<=boxX+boxWidth && bonusX>=boxX)||(bonusX+bonusSize<=boxX+boxWidth&& bonusX+bonusSize>=boxX))) {
             //if top or bottom y-values of the box when its moving is inside bonus y-values, it counts as a hit
-
-            if ((boxY<=bonusY+bonusSize&&boxY>=bonusY)||(boxY+boxSize>=bonusY&&boxY+boxSize<=bonusY+bonusSize)) {
+            if ((boxY<=bonusY+bonusSize&&boxY>=bonusY)||(boxY+boxHeight>=bonusY&&boxY+boxHeight<=bonusY+bonusSize)) {
                 //chosenBonus: 0 = gapBonus, 1 = slowBonus, 2 = pointsBonus
                 if (chosenBonus==0) {
                     gapWidth*=1.1;
@@ -251,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
                 bonuses[chosenBonus].setX(bonusX);
                 chosenBonus = -1;
             }
-
         }
     }
     @Override
@@ -276,7 +302,8 @@ public class MainActivity extends AppCompatActivity {
             topPipe.setY(topPipeY);
             boxY = box.getY();
             // The box is a square.(height and width are the same.)
-            boxSize = box.getHeight();
+            boxHeight = box.getHeight();
+            boxWidth = box.getWidth();
             bonusSize = bonuses[0].getHeight();
             startLabel.setVisibility(View.GONE);
             timer.schedule(new TimerTask() {
