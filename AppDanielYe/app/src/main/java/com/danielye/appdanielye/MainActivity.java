@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView bottomPipe;
     private ImageView topPipe;
     private ImageView[] bonuses;
+    private ImageView[] livesArr;
     private int chosenBonus;
     private int numOfBonuses;
     // Size
@@ -63,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean start_flg = false;
     private boolean pipe_reset = false;
     private boolean crashed = false;
+    private boolean immune = false;
     //bonus
     private double randomBonus;
     private int bonusCounter;
     private int prevBonus;
+    private int lives;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +84,19 @@ public class MainActivity extends AppCompatActivity {
         crash.setVisibility(View.INVISIBLE);
         topPipe = (ImageView) findViewById(R.id.topPipe);
         bottomPipe = (ImageView) findViewById(R.id.bottomPipe);
-        numOfBonuses = 3;
-        bonuses = new ImageView[numOfBonuses]; //array for 3 bonuses
+        numOfBonuses = 4;
+        bonuses = new ImageView[numOfBonuses]; //array for 4 bonuses
         bonuses[0] = (ImageView) findViewById(R.id.gapBonus);
         bonuses[1] = (ImageView) findViewById(R.id.slowBonus);
         bonuses[2] = (ImageView) findViewById(R.id.pointsBonus);
+        bonuses[3] = (ImageView) findViewById(R.id.lifeBonus);
+        livesArr = new ImageView[3];
+        livesArr[0] = (ImageView) findViewById(R.id.life1);
+        livesArr[1] = (ImageView) findViewById(R.id.life2);
+        livesArr[2] = (ImageView) findViewById(R.id.life3);
+        for (int i = 0;i<livesArr.length;i++) {
+            livesArr[i].setVisibility(View.INVISIBLE);
+        }
         handler = new Handler();
         timer = new Timer();
         // Get screen size.
@@ -98,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         pipeSpeed = screenWidth / 250;
         bonusYSpeed = screenHeight / 500;
         crashSpeed = screenHeight / 500;
-        gapYSpeed = screenHeight / 920;
+        gapYSpeed = screenHeight / 930;
         gapWidth = (float)(screenHeight/8);
         boxX = screenWidth / 5;
 //        Log.v("height",screenHeight+"");
@@ -117,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         bonusCounter = -1;
         prevBonus = -1;
         diff = 0;
+        lives = 0;
     }
     public void changePos() {
         hitCheck();
@@ -128,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             crash.setY(boxY);
         } else {
             //move bonus
-            Log.v("bonus:", chosenBonus + "");
+//            Log.v("bonus:", chosenBonus + "");
             if (chosenBonus >= 0) {
                 if (score >= 10) {
                     //move bonus up and down only after 10 points
@@ -209,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
             bottomPipe.setY(bottomPipeY);
             topPipe.setX(pipeX);
             topPipe.setY(topPipeY);
-            //spawn bonus randomly. 60% chance of spawning every 5 points
-            if (score > 0 && score % 5 == 0 && pipeX <= screenWidth / 2 && pipeX > boxX + boxWidth && chosenBonus == -1 && randomBonus < 0.6) {
+            //spawn bonus randomly. 60% chance of spawning every 3 points
+            if (score > 0 && score % 3 == 0 && pipeX <= screenWidth / 2 && pipeX > boxX + boxWidth && chosenBonus == -1 && randomBonus < 0.5) {
                 chosenBonus = (int) (Math.random() * numOfBonuses);
                 bonusY = (float) (Math.random() * (frameHeight - bonusSize));
                 bonuses[chosenBonus].setX(bonusX);
@@ -243,17 +255,30 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("SCORE", score);
             startActivity(intent);
         }
+        //check if immunity expired
         float topPipeEdge = topPipeY+topPipe.getHeight();
         float bottomPipeEdge = bottomPipeY;
         // If the edge of the box hits the pipe, game over.
-        if ((boxY<=topPipeEdge||boxY>=bottomPipeEdge-boxHeight)&&pipeX<=0+boxX&&boxX<=pipeX+bottomPipe.getWidth()&&crashed==false) {
-            //switch bird avatars
-            crash.setX(box.getX());
-            crash.setY(box.getY());
-            boxY = crash.getY();
-            box.setVisibility(View.INVISIBLE);
-            crash.setVisibility(View.VISIBLE);
-            crashed=true;
+        if ((boxY<=topPipeEdge||boxY+boxHeight>=bottomPipeEdge)&&(pipeX<=boxX+boxWidth&&pipeX+bottomPipe.getWidth()>=boxX)&&crashed==false&&immune==false) {
+            //if you have more than one life, remove one, and start immunity
+            if (lives>0) {
+                Log.v("lives ",lives+"");
+                livesArr[lives-1].setVisibility(View.INVISIBLE);
+                immune=true;
+                lives--;
+            } else {
+                //switch bird avatars
+                crash.setX(box.getX());
+                crash.setY(box.getY());
+                boxY = crash.getY();
+                box.setVisibility(View.INVISIBLE);
+                crash.setVisibility(View.VISIBLE);
+                crashed = true;
+            }
+        }
+        //once you have passed the pipes with immunity, remove immunity
+        if (pipeX+bottomPipe.getWidth()<boxX&&crashed==false&&immune==true){
+            immune = false;
         }
         //check for bonus hits
         if (chosenBonus>=0 && ((bonusX<=boxX+boxWidth && bonusX>=boxX)||(bonusX+bonusSize<=boxX+boxWidth&& bonusX+bonusSize>=boxX))) {
@@ -273,6 +298,12 @@ public class MainActivity extends AppCompatActivity {
                     score++;
                     scoreLabel.setText("Score : " + score);
                     pointCounter.setText("" + score);
+                } else if (chosenBonus==3) {
+                    lives++;
+                    if (lives>3) {
+                        lives=3;
+                    }
+                    livesArr[lives-1].setVisibility(View.VISIBLE);
                 }
                 bonusX = screenWidth;
                 bonuses[chosenBonus].setX(bonusX);
