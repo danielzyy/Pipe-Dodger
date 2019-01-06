@@ -5,20 +5,21 @@
     android:layout_height="match_parent"
     tools:context=".start"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@drawable/sky">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Don't Touch the Pipes!"
-        android:textSize="35sp"/>
+        android:layout_height="150dp"
+        android:src="@drawable/logo"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Boosts(Active for 3 pipes):"
         android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"/>
+        android:textSize="26sp"
+        android:textColor="#ffffff"
+        android:layout_marginTop="10dp"/>
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,29 +28,31 @@
         <TableRow
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/slow"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Slows down pipes"
-                android:textSize="19sp"
-                android:paddingLeft="10dp"/>
+                android:textSize="20sp"
+                android:paddingLeft="10dp"
+                android:textColor="#ffffff"/>
         </TableRow>
         <TableRow
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/gap"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Increases gap between pipes"
-                android:textSize="19sp"
-                android:paddingLeft="10dp"/>
+                android:textSize="20sp"
+                android:paddingLeft="10dp"
+                android:textColor="#ffffff"/>
         </TableRow>
     </TableLayout>
 
@@ -58,31 +61,50 @@
         android:layout_height="wrap_content"
         android:text="Bonus:"
         android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"/>
+        android:textSize="26sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffff"/>
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="5dp">
         <TableRow
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/points"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+1 point"
-                android:textSize="19sp"
-                android:paddingLeft="10dp"/>
+                android:textSize="20sp"
+                android:paddingLeft="10dp"
+                android:textColor="#ffffff"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/life"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1 life (3 lives max)"
+                android:textSize="20sp"
+                android:paddingLeft="10dp"
+                android:textColor="#ffffff"/>
         </TableRow>
     </TableLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="START"
-        android:layout_marginTop="60dp"
-        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="#ffffff"
+        android:textSize="20sp"
         android:onClick="startGame"/>
 </LinearLayout>
