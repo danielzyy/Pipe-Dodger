@@ -4,8 +4,9 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = size.y;
         pipeSpeed = screenWidth / 250;
         bonusYSpeed = screenHeight / 500;
-        crashSpeed = screenHeight / 500;
+        crashSpeed = screenHeight / 450;
         gapYSpeed = screenHeight / 930;
         gapWidth = (float)(screenHeight/8);
         boxX = screenWidth / 5;
@@ -191,10 +192,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //increase speed of pipes and decrease gapWidth every 10 points
                 if (score > 0 && score % 10 == 0) {
-                    pipeSpeed *= 1.08;
-                    gapWidth *= 0.9;
-                    if (gapWidth < boxHeight) {
-                        gapWidth = boxHeight;
+                    pipeSpeed *= 1.07;
+                    gapWidth *= 0.95;
+                    if (gapWidth < boxHeight*1.5) {
+                        gapWidth = (float)(boxHeight*1.5);
                     }
                 }
                 pipeX = screenWidth + bottomPipe.getWidth();
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         if ((boxY<=topPipeEdge||boxY+boxHeight>=bottomPipeEdge)&&(pipeX<=boxX+boxWidth&&pipeX+bottomPipe.getWidth()>=boxX)&&crashed==false&&immune==false) {
             //if you have more than one life, remove one, and start immunity
             if (lives>0) {
-                Log.v("lives ",lives+"");
+//                Log.v("lives ",lives+"");
                 livesArr[lives-1].setVisibility(View.INVISIBLE);
                 immune=true;
                 lives--;
@@ -321,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
             frameHeight = frame.getHeight();
             //make pointCounter visible
             pointCounter.setVisibility(View.VISIBLE);
-
             //set randomized pipes
             pipeX = frame.getWidth();
             gapY = (float)(Math.random() * (frameHeight - 2 * gapWidth) + 0.7 * gapWidth); //add 0.7 gapWidth padding on each side so gap dosent go on edge
@@ -363,5 +363,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+    // Override Return Button
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (event.getKeyCode()==KeyEvent.KEYCODE_BACK&&start_flg==false) {
+                startActivity(new Intent(getApplicationContext(), start.class));
+            } else {
+                return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 }
