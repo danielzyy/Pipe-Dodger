@@ -57,9 +57,10 @@
             android:id="@+id/startLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tap to Begin"
+            android:text="Drag Up and Down to Move"
+            android:textAlignment="center"
             android:textColor="#ffffff"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="130dp"/>
         <ImageView
