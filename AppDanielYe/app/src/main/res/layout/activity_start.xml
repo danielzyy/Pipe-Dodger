@@ -107,4 +107,12 @@
         android:background="#ffffff"
         android:textSize="20sp"
         android:onClick="startGame"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Made by Daniel Ye"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>
