@@ -42,7 +42,6 @@ public class result extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-
     // Disable Return Button
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
