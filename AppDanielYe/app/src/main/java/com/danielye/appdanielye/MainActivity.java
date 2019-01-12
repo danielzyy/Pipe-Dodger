@@ -14,10 +14,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.Timer;
 import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
-    private TextView scoreLabel;
     private TextView startLabel;
     private TextView pointCounter;
     private ImageView box;
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     float initialY;
     float finalY;
     // Status Check
+    private boolean load = false;
     private boolean action_flg = false;
     private boolean start_flg = false;
     private boolean pipe_reset = false;
@@ -71,11 +77,34 @@ public class MainActivity extends AppCompatActivity {
     private int bonusCounter;
     private int prevBonus;
     private int lives;
+    //ads
+    private AdView mAdView;
+    private InterstitialAd interstitial;
+    private double showAd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); //defines layout of views, buttons, images, and labels
-        scoreLabel = (TextView) findViewById(R.id.scoreLabel);
+        //load banner ad, do not start game until it is loaded
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequestBanner = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequestBanner);
+        mAdView.setAdListener(new AdListener()  {
+            @Override
+            public void onAdLoaded() {
+                load = true;
+            }
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                load = true;
+            }
+            @Override
+            public void onAdClosed() {
+                load = true;
+            }
+        });
+        // Interstitial ad
+        showAd = Math.random();
         startLabel = (TextView) findViewById(R.id.startLabel);
         pointCounter = (TextView) findViewById(R.id.pointCounter);
         //hide pointCounter
@@ -123,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
             bonuses[i].setX(screenWidth);
         }
         bonusX = screenWidth;
-        scoreLabel.setText("Score : 0");
         chosenBonus = -1;
         randomBonus = 1;
         bonusCounter = -1;
@@ -168,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
             //increase score count when pipes pass box
             if (pipe_reset == false && pipeX + bottomPipe.getWidth() < boxX) {
                 score++;
-                scoreLabel.setText("Score : " + score);
                 pointCounter.setText("" + score);
                 pipe_reset = true;
             }
@@ -251,10 +278,46 @@ public class MainActivity extends AppCompatActivity {
             if (timer!=null)
                 timer.cancel();
             timer = null;
-            //end game
-            Intent intent = new Intent(getApplicationContext(), result.class);
-            intent.putExtra("SCORE", score);
-            startActivity(intent);
+            //end game, play Interstitial ad %30 of the time
+            if (showAd<0.30) {
+                MobileAds.initialize(this, "[ADMOB_APP_ID]");
+
+                // Create the interstitial.
+                interstitial = new InterstitialAd(this);
+
+                // Set your ad unit id
+                interstitial.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+                // Create request.
+                AdRequest adRequest = new AdRequest.Builder().build();
+
+                // Start loading...
+                interstitial.loadAd(adRequest);
+                // Once request is loaded, display ad.
+                interstitial.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        displayInterstitial();
+                    }
+                    @Override
+                    public void onAdClosed() {
+                        Intent intent = new Intent(getApplicationContext(), result.class);
+                        intent.putExtra("SCORE", score);
+                        startActivity(intent);
+                    }
+                    @Override
+                    public void onAdFailedToLoad(int errorCode) {
+                        Intent intent = new Intent(getApplicationContext(), result.class);
+                        intent.putExtra("SCORE", score);
+                        startActivity(intent);
+                    }
+                });
+            } else {
+                Intent intent = new Intent(getApplicationContext(), result.class);
+                intent.putExtra("SCORE", score);
+                startActivity(intent);
+            }
+
         }
         //check if immunity expired
         float topPipeEdge = topPipeY+topPipe.getHeight();
@@ -297,7 +360,6 @@ public class MainActivity extends AppCompatActivity {
                     prevBonus = 1;
                 } else if (chosenBonus==2) {
                     score++;
-                    scoreLabel.setText("Score : " + score);
                     pointCounter.setText("" + score);
                 } else if (chosenBonus==3) {
                     lives++;
@@ -312,9 +374,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    public void displayInterstitial() {
+        if (interstitial.isLoaded()) {
+            interstitial.show();
+        }
+    }
     @Override
     public boolean onTouchEvent(MotionEvent me) {
-        if (start_flg == false) {
+        if (start_flg == false && load == true) {
             start_flg = true;
             // Why get frame height and box height here?
             // Because the UI has not been set on the screen in OnCreate()!!
@@ -348,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             }, 0, 5);
-        } else {
+        } else if (load == true){
             if (me.getAction() == MotionEvent.ACTION_DOWN) {
                 initialY = me.getY();
                 finalY = initialY;

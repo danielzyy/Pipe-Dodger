@@ -8,8 +8,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-public class result extends AppCompatActivity {
 
+public class result extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +39,8 @@ public class result extends AppCompatActivity {
     }
 
     public void tryAgain(View view) {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), start.class));
     }
-
     // Disable Return Button
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
