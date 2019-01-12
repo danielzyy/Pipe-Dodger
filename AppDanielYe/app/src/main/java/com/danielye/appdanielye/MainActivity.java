@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private int screenHeight;
     private float gapWidth;
     private int bonusSize;
+    private int originalBirdHight;
     // Position
     private float boxY;
     private float boxX;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private float bonusX;
     private float bonusY;
     private float diff;
+    private String bonusDirection;
     //Speed
     private float pipeSpeed;
     private float bonusYSpeed;
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     float initialY;
     float finalY;
     // Status Check
-    private boolean load = false;
+//    private boolean load = false;
     private boolean action_flg = false;
     private boolean start_flg = false;
     private boolean pipe_reset = false;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private int prevBonus;
     private int lives;
     //ads
-    private AdView mAdView;
+//    private AdView mAdView;
     private InterstitialAd interstitial;
     private double showAd;
     @Override
@@ -86,24 +88,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); //defines layout of views, buttons, images, and labels
         //load banner ad, do not start game until it is loaded
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequestBanner = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequestBanner);
-        mAdView.setAdListener(new AdListener()  {
-            @Override
-            public void onAdLoaded() {
-                load = true;
-            }
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                load = true;
-            }
-            @Override
-            public void onAdClosed() {
-                load = true;
-            }
-        });
-        // Interstitial ad
+//        mAdView = (AdView) findViewById(R.id.adView);
+//        AdRequest adRequestBanner = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequestBanner);
+//        mAdView.setAdListener(new AdListener()  {
+//            @Override
+//            public void onAdLoaded() {
+//                load = true;
+//            }
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                load = true;
+//            }
+//            @Override
+//            public void onAdClosed() {
+//                load = true;
+//            }
+//        });
+        //Show interstitial ad randomly when you die
         showAd = Math.random();
         startLabel = (TextView) findViewById(R.id.startLabel);
         pointCounter = (TextView) findViewById(R.id.pointCounter);
@@ -114,12 +116,13 @@ public class MainActivity extends AppCompatActivity {
         crash.setVisibility(View.INVISIBLE);
         topPipe = (ImageView) findViewById(R.id.topPipe);
         bottomPipe = (ImageView) findViewById(R.id.bottomPipe);
-        numOfBonuses = 4;
+        numOfBonuses = 5;
         bonuses = new ImageView[numOfBonuses]; //array for 4 bonuses
         bonuses[0] = (ImageView) findViewById(R.id.gapBonus);
         bonuses[1] = (ImageView) findViewById(R.id.slowBonus);
         bonuses[2] = (ImageView) findViewById(R.id.pointsBonus);
         bonuses[3] = (ImageView) findViewById(R.id.lifeBonus);
+        bonuses[4] = (ImageView) findViewById(R.id.shrinkBonus);
         livesArr = new ImageView[3];
         livesArr[0] = (ImageView) findViewById(R.id.life1);
         livesArr[1] = (ImageView) findViewById(R.id.life2);
@@ -162,18 +165,21 @@ public class MainActivity extends AppCompatActivity {
     public void changePos() {
         hitCheck();
         if (crashed==true) {
-            boxY+=crashSpeed*1.3;
+            boxY+=crashSpeed*1.35;
             if (boxY+boxHeight>=frameHeight) {
                 boxY=frameHeight-boxHeight;
             }
             crash.setY(boxY);
         } else {
             //move bonus
-//            Log.v("bonus:", chosenBonus + "");
             if (chosenBonus >= 0) {
                 if (score >= 10) {
                     //move bonus up and down only after 10 points
-                    bonusY += bonusYSpeed;
+                    if (bonusDirection.equals("down")) {
+                        bonusY += bonusYSpeed;
+                    } else {
+                        bonusY -= bonusYSpeed;
+                    }
                     if (bonusY > frameHeight - bonuses[0].getHeight()) {
                         bonusY = frameHeight - bonuses[0].getHeight();
                         bonusYSpeed *= -1;
@@ -193,43 +199,55 @@ public class MainActivity extends AppCompatActivity {
                     bonuses[chosenBonus].setY(bonusY);
                 }
             }
-            //increase score count when pipes pass box
-            if (pipe_reset == false && pipeX + bottomPipe.getWidth() < boxX) {
-                score++;
-                pointCounter.setText("" + score);
-                pipe_reset = true;
-            }
             // move top and bottom pipe to the edge
             pipeX -= pipeSpeed;
-            if (pipeX < -bottomPipe.getWidth()) {
-                pipe_reset = false;
+            //increase score count when pipes pass box
+            if (pipe_reset == false && pipeX + bottomPipe.getWidth() < boxX) {
                 //keeping track of the duration of each bonus
                 if (bonusCounter != -1) {
                     bonusCounter++;
-                    if (prevBonus == 0 && bonusCounter == 3) { //gap bonus active
-                        gapWidth /= 1.1;
-                        prevBonus = -1;
-                        bonusCounter = -1;
-                    } else if (prevBonus == 1 && bonusCounter == 3) { //slow bonus active
-                        pipeSpeed /= 0.75;
-                        gapYSpeed /= 0.75;
+                    if (bonusCounter==3) {
+                        if (prevBonus == 0) { //gap bonus active
+                            gapWidth /= 1.3;
+                        } else if (prevBonus == 1) { //slow bonus active
+                            pipeSpeed /= 0.75;
+                            gapYSpeed /= 0.75;
+                        } else if (prevBonus == 4) { //shrink bonus active
+                            boxHeight = (int)(boxHeight*1.5);
+                            boxWidth = (int)(boxHeight*(35.0/27));
+                            box.getLayoutParams().height = boxHeight;
+                            box.getLayoutParams().width = boxWidth;
+                            box.requestLayout();
+                            crash.getLayoutParams().height = boxHeight;
+                            crash.getLayoutParams().width = boxWidth;
+                            crash.requestLayout();
+                        }
                         prevBonus = -1;
                         bonusCounter = -1;
                     }
                 }
-                //increase speed of pipes and decrease gapWidth every 10 points
-                if (score > 0 && score % 10 == 0) {
-                    pipeSpeed *= 1.07;
+                score++;
+                pointCounter.setText("" + score);
+                pipe_reset = true;
+                //increase speed of pipes and decrease gapWidth every 10 points (capped at 60 points)
+                if (score > 0 && score % 10 == 0 && score <70) {
+                    pipeSpeed *= 1.05;
                     gapWidth *= 0.95;
-                    if (gapWidth < boxHeight*1.5) {
-                        gapWidth = (float)(boxHeight*1.5);
+                    if (gapWidth < originalBirdHight*1.75) {
+                        gapWidth = (float)(originalBirdHight*1.75);
                     }
                 }
-                pipeX = screenWidth + bottomPipe.getWidth();
-                //choose random y-value for gap, and add 0.7 gapWidth padding on each side so gap dosent go on edge
-                gapY = (int) (Math.random() * (frameHeight - 2.4 * gapWidth) + 0.7 * gapWidth);
                 randomBonus = Math.random();
             }
+            //move pipes back once they reach the end of screen
+            if (pipeX < -bottomPipe.getWidth()) {
+                pipe_reset = false;
+                pipeX = screenWidth + bottomPipe.getWidth();
+                //choose random y-value for gap, and add 1 gapWidth padding on each side so gap dosent go on edge
+                gapY = (int) (Math.random() * (frameHeight - 3 * gapWidth) + 1 * gapWidth);
+
+            }
+            //move every 10 pipes up and down
             if (score % 10 == 0 && score > 0) {
                 if (randomBonus < 0.5)
                     gapY += gapYSpeed;
@@ -249,12 +267,17 @@ public class MainActivity extends AppCompatActivity {
             bottomPipe.setY(bottomPipeY);
             topPipe.setX(pipeX);
             topPipe.setY(topPipeY);
-            //spawn bonus randomly. 60% chance of spawning every 3 points
-            if (score > 0 && score % 3 == 0 && pipeX <= screenWidth / 2 && pipeX > boxX + boxWidth && chosenBonus == -1 && randomBonus < 0.5) {
+            //spawn bonus randomly. 50% chance of spawning every 3 points
+            if (score > 0 && score % 3 == 0 && pipeX +bottomPipe.getWidth()<= screenWidth / 2 && pipeX > boxX + boxWidth && chosenBonus == -1 && randomBonus < 0.5) {
+                if (Math.random()<0.5)
+                    bonusDirection = "up";
+                else
+                    bonusDirection = "down";
                 chosenBonus = (int) (Math.random() * numOfBonuses);
                 bonusY = (float) (Math.random() * (frameHeight - bonusSize));
                 bonuses[chosenBonus].setX(bonusX);
                 bonuses[chosenBonus].setY(bonusY);
+                bonusSize = bonuses[chosenBonus].getHeight();
             }
             // Move Box
             if (action_flg && finalY != 0 && initialY != 0) {
@@ -279,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 timer.cancel();
             timer = null;
             //end game, play Interstitial ad %30 of the time
-            if (showAd<0.30) {
+            if (showAd<0.3) {
                 MobileAds.initialize(this, "[ADMOB_APP_ID]");
 
                 // Create the interstitial.
@@ -348,9 +371,9 @@ public class MainActivity extends AppCompatActivity {
         if (chosenBonus>=0 && ((bonusX<=boxX+boxWidth && bonusX>=boxX)||(bonusX+bonusSize<=boxX+boxWidth&& bonusX+bonusSize>=boxX))) {
             //if top or bottom y-values of the box when its moving is inside bonus y-values, it counts as a hit
             if ((boxY<=bonusY+bonusSize&&boxY>=bonusY)||(boxY+boxHeight>=bonusY&&boxY+boxHeight<=bonusY+bonusSize)) {
-                //chosenBonus: 0 = gapBonus, 1 = slowBonus, 2 = pointsBonus
+                //chosenBonus: 0 = gapBonus, 1 = slowBonus, 2 = pointsBonus, 3 = lifeBonus, 4 = shrinkBonus
                 if (chosenBonus==0) {
-                    gapWidth*=1.1;
+                    gapWidth*=1.3;
                     bonusCounter = 0;
                     prevBonus = 0;
                 } else if (chosenBonus==1) {
@@ -367,6 +390,17 @@ public class MainActivity extends AppCompatActivity {
                         lives=3;
                     }
                     livesArr[lives-1].setVisibility(View.VISIBLE);
+                } else if (chosenBonus==4) {
+                    boxHeight = (int)(boxHeight/1.5);
+                    boxWidth = (int)(boxHeight*(35.0/27));
+                    box.getLayoutParams().height = boxHeight; //shrink by 50%
+                    box.getLayoutParams().width = boxWidth;
+                    box.requestLayout();
+                    crash.getLayoutParams().height = boxHeight;
+                    crash.getLayoutParams().width = boxWidth;
+                    crash.requestLayout();
+                    bonusCounter = 0;
+                    prevBonus = 4;
                 }
                 bonusX = screenWidth;
                 bonuses[chosenBonus].setX(bonusX);
@@ -381,14 +415,22 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onTouchEvent(MotionEvent me) {
-        if (start_flg == false && load == true) {
+        if (start_flg == false) {
             start_flg = true;
             // Why get frame height and box height here?
             // Because the UI has not been set on the screen in OnCreate()!!
             FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
             frameHeight = frame.getHeight();
+            box.getLayoutParams().height = (int)(gapWidth/2.75);
+            box.getLayoutParams().width = (int)(box.getHeight()*(35.0/27));
+            crash.getLayoutParams().height = (int)(gapWidth/2.75);
+            crash.getLayoutParams().width = (int)(box.getHeight()*(35.0/27));
             //make pointCounter visible
             pointCounter.setVisibility(View.VISIBLE);
+            //get initial bird height and width
+            boxHeight = box.getHeight();
+            boxWidth = box.getWidth();
+            originalBirdHight = box.getHeight();
             //set randomized pipes
             pipeX = frame.getWidth();
             gapY = (float)(Math.random() * (frameHeight - 2 * gapWidth) + 0.7 * gapWidth); //add 0.7 gapWidth padding on each side so gap dosent go on edge
@@ -399,10 +441,6 @@ public class MainActivity extends AppCompatActivity {
             topPipe.setX(pipeX);
             topPipe.setY(topPipeY);
             boxY = box.getY();
-            // The box is a square.(height and width are the same.)
-            boxHeight = box.getHeight();
-            boxWidth = box.getWidth();
-            bonusSize = bonuses[0].getHeight();
             startLabel.setVisibility(View.GONE);
             timer.schedule(new TimerTask() {
                 @Override
@@ -415,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             }, 0, 5);
-        } else if (load == true){
+        } else {
             if (me.getAction() == MotionEvent.ACTION_DOWN) {
                 initialY = me.getY();
                 finalY = initialY;
