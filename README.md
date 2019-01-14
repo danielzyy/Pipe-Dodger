@@ -9,3 +9,5 @@ Released Version 1.4 (January 12, 2019).
 - Capped speed increase and gap decrease at 60 points
 - Increased size of extra life icons
 - Made character height and width relative to screen size
+
+Copyright © 2019 Daniel Ye
