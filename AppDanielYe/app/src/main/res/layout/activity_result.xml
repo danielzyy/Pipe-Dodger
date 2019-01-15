@@ -33,17 +33,46 @@
         android:textSize="30sp"
         android:textColor="#ffffff"
         android:layout_marginTop="40dp"/>
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+    <TableRow android:gravity="center_vertical">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Home"
+            android:layout_marginRight="10dp"
+            android:textAllCaps="false"
+            android:background="#ffffff"
+            android:textSize="20sp"
+            android:onClick="home"/>
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Try Again"
+        android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+
+            android:textAllCaps="false"
+        android:background="#00ff00"
+        android:textSize="20sp"
+        android:onClick="tryAgain"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
         android:padding="10dp"
-        android:text="Try Again"
+        android:layout_marginLeft="10dp"
+        android:text="Store"
         android:textAllCaps="false"
         android:background="#ffffff"
-        android:textSize="25sp"
-        android:onClick="tryAgain"/>
+        android:textSize="20sp"
+        android:onClick="store"/>
+    </TableRow>
+    </TableLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

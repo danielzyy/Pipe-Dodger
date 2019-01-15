@@ -89,11 +89,11 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/points"/>
+                android:src="@drawable/life"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+1 point"
+                android:text="+1 life (3 lives max)"
                 android:textSize="20sp"
                 android:paddingLeft="10dp"
                 android:textColor="#ffffff"/>
@@ -104,25 +104,45 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/life"/>
+                android:src="@drawable/points"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+1 life (3 lives max)"
+                android:text="+1 Coin"
                 android:textSize="20sp"
                 android:paddingLeft="10dp"
                 android:textColor="#ffffff"/>
         </TableRow>
+
     </TableLayout>
-    <Button
+    <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="START"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
-        android:background="#ffffff"
-        android:textSize="20sp"
-        android:onClick="startGame"/>
+        android:layout_marginTop="15dp">
+        <TableRow
+            android:gravity="center_vertical">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Start"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:background="#ffffff"
+            android:textSize="20sp"
+            android:onClick="startGame"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="15dp"
+            android:text="Store"
+            android:textAllCaps="false"
+            android:background="#ffffff"
+            android:textSize="20sp"
+            android:onClick="store"/>
+        </TableRow>
+    </TableLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

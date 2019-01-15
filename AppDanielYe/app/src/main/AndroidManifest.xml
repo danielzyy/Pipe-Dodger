@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.danielye.appdanielye">
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -10,16 +11,24 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="[ADMOB_APP_ID]"/>
-        <activity android:name=".start" android:screenOrientation="portrait">
+            android:value="ADMOB ID" />
+        <activity
+            android:name=".start"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".result" android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".result"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".store"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

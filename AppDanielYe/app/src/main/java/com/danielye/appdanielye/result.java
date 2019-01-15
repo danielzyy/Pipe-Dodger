@@ -37,9 +37,14 @@ public class result extends AppCompatActivity {
         }
 
     }
-
-    public void tryAgain(View view) {
+    public void home(View view) {
         startActivity(new Intent(getApplicationContext(), start.class));
+    }
+    public void tryAgain(View view) {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+    public void store(View view) {
+        startActivity(new Intent(getApplicationContext(), store.class));
     }
     // Disable Return Button
     @Override

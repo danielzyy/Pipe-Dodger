@@ -11,13 +11,14 @@ public class start extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
     }
 
     public void startGame(View view) {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
-
+    public void store(View view) {
+        startActivity(new Intent(getApplicationContext(), store.class));
+    }
     // Disable Return Button
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

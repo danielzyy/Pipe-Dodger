@@ -10,7 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/sky">
-
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="left|top"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/points"/>
+        <TextView
+            android:id="@+id/coinsCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="25sp"
+            android:textColor="#000000"
+            android:layout_gravity="left|top"
+            android:layout_marginTop="7.5dp"
+            android:layout_marginLeft="45dp"/>
         <TextView
             android:id="@+id/pointCounter"
             android:layout_width="wrap_content"
@@ -31,7 +47,7 @@
         <ImageView
             android:id="@+id/bottomPipe"
             android:layout_width="wrap_content"
-            android:layout_height="600dp"
+            android:layout_height="match_parent"
             android:layout_gravity="right"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
@@ -39,7 +55,7 @@
         <ImageView
             android:id="@+id/topPipe"
             android:layout_width="wrap_content"
-            android:layout_height="600dp"
+            android:layout_height="match_parent"
             android:layout_gravity="top|right"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"

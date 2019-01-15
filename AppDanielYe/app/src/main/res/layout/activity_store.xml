@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    android:orientation="vertical"
+    tools:context=".store">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="left|top"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/points"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/coinsCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_gravity="left|top"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Store"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif-smallcaps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/yellowBird"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/bird"
+        app:layout_constraintBottom_toTopOf="@+id/dragon"
+        app:layout_constraintEnd_toStartOf="@+id/chicken"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/chicken"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignTop="@+id/helmet"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/chicken"
+        app:layout_constraintBottom_toTopOf="@+id/fly"
+        app:layout_constraintEnd_toStartOf="@+id/helmet"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/yellowBird"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/helmet"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/helmet"
+        app:layout_constraintBottom_toTopOf="@+id/monster"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chicken"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/yellowBirdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yellowBird"
+        android:layout_alignLeft="@+id/yellowBird"
+        android:background="#ffffff"
+        android:onClick="yellowBird"
+        android:text="Select"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/chickenButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yellowBird" />
+
+    <Button
+        android:id="@+id/chickenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chicken"
+        android:layout_alignLeft="@+id/chicken"
+        android:background="#ff0000"
+        android:onClick="chick"
+        android:text="Unlock"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/helmetButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/yellowBirdButton"
+        app:layout_constraintTop_toBottomOf="@+id/chicken" />
+
+    <Button
+        android:id="@+id/helmetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/helmet"
+        android:layout_alignLeft="@+id/helmet"
+        android:background="#ff0000"
+        android:onClick="helmet"
+        android:text="Unlock"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chickenButton"
+        app:layout_constraintTop_toBottomOf="@+id/helmet" />
+
+    <ImageView
+    android:id="@+id/dragon"
+    android:layout_width="90dp"
+    android:layout_height="90dp"
+    android:src="@drawable/dragon"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/fly"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/yellowBird" />
+
+    <ImageView
+        android:id="@+id/fly"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/fly"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/monster"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dragon"
+        app:layout_constraintTop_toBottomOf="@+id/chicken" />
+
+    <ImageView
+        android:id="@+id/monster"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/monster"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fly"
+        app:layout_constraintTop_toBottomOf="@+id/helmet" />
+
+    <Button
+        android:id="@+id/dragonButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:onClick="dragon"
+        android:text="Unlock"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/flyButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dragon"/>
+
+
+    <Button
+        android:id="@+id/flyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:onClick="fly"
+        android:text="Unlock"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/monsterButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dragonButton"
+        app:layout_constraintTop_toBottomOf="@+id/fly" />
+
+    <Button
+        android:id="@+id/monsterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:onClick="monster"
+        android:text="Unlock"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/flyButton"
+        app:layout_constraintTop_toBottomOf="@+id/monster" />
+
+    <LinearLayout
+    android:id="@+id/confirm"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="50dp"
+    android:background="#CC99CC"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+    android:id="@+id/confirmMessage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Purchase skin for 0 coins?"
+    android:textAlignment="center"
+    android:textAllCaps="false"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textSize="40sp"
+    android:textStyle="bold"
+    app:fontFamily="sans-serif-smallcaps" />
+
+    <TableLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TableRow android:gravity="center_vertical"
+    android:layout_marginBottom="10dp">
+    <Button
+    android:id="@+id/cancelButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="15dp"
+    android:background="#ff0000"
+    android:onClick="cancel"
+    android:padding="10dp"
+    android:text="Cancel"
+    android:textColor="#000000"
+    android:textSize="30sp" />
+    <Button
+    android:id="@+id/buyButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:background="#00ff00"
+    android:onClick="buy"
+    android:padding="10dp"
+    android:text="Buy"
+    android:textColor="#000000"
+    android:textSize="30sp" />
+    </TableRow>
+    </TableLayout>
+    </LinearLayout>
+    <LinearLayout
+    android:id="@+id/insufficient"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="50dp"
+    android:background="#CC99CC"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <TextView
+    android:id="@+id/insufficientMessage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="You do not have enough Coins"
+    android:textAlignment="center"
+    android:textAllCaps="false"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textSize="40sp"
+    android:textStyle="bold"
+    app:fontFamily="sans-serif-smallcaps" />
+    <TableLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TableRow android:gravity="center_vertical"
+    android:layout_marginBottom="10dp">
+    <Button
+    android:id="@+id/playButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="15dp"
+    android:background="#ff0000"
+    android:onClick="keepPlaying"
+    android:padding="10dp"
+    android:text="Cancel"
+    android:textColor="#000000"
+    android:textSize="30sp" />
+    <Button
+    android:id="@+id/watchVideo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:background="#00ff00"
+    android:onClick="watchAd"
+    android:padding="10dp"
+    android:text="Watch an ad &#10;to gain 2 coins"
+    android:textColor="#000000"
+    android:textSize="16.5sp"/>
+    </TableRow>
+    </TableLayout>
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

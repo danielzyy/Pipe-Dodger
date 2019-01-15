@@ -1,5 +1,7 @@
 package com.danielye.appdanielye;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private TextView startLabel;
     private TextView pointCounter;
+    private TextView coinsCounter;
     private ImageView box;
     private ImageView crash;
     private ImageView bottomPipe;
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean crashed = false;
     private boolean immune = false;
     //bonus
+    private int coins;
     private double randomBonus;
     private int bonusCounter;
     private int prevBonus;
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         showAd = Math.random();
         startLabel = (TextView) findViewById(R.id.startLabel);
         pointCounter = (TextView) findViewById(R.id.pointCounter);
+        coinsCounter = (TextView) findViewById(R.id.coinsCounter);
         //hide pointCounter
         pointCounter.setVisibility(View.INVISIBLE);
         box = (ImageView) findViewById(R.id.box);
@@ -132,6 +137,30 @@ public class MainActivity extends AppCompatActivity {
         }
         handler = new Handler();
         timer = new Timer();
+        SharedPreferences settings = getSharedPreferences("CHARACTER", Context.MODE_PRIVATE);
+        String character = settings.getString("CHARACTER", "yellowBird");
+        if (character.equals("yellowBird")) {
+            box.setImageResource(R.drawable.bird);
+            crash.setImageResource(R.drawable.birdcrash);
+        } else if (character.equals("chicken")) {
+            box.setImageResource(R.drawable.chicken);
+            crash.setImageResource(R.drawable.chickencrash);
+        } else if (character.equals("helmet")) {
+            box.setImageResource(R.drawable.helmet);
+            crash.setImageResource(R.drawable.helmetcrash);
+        } else if (character.equals("dragon")) {
+            box.setImageResource(R.drawable.dragon);
+            crash.setImageResource(R.drawable.dragoncrash);
+        } else if (character.equals("fly")) {
+            box.setImageResource(R.drawable.fly);
+            crash.setImageResource(R.drawable.flycrash);
+        } else if (character.equals("monster")) {
+            box.setImageResource(R.drawable.monster);
+            crash.setImageResource(R.drawable.monstercrash);
+        }
+        settings = getSharedPreferences("COINS", Context.MODE_PRIVATE);
+        coins = settings.getInt("COINS", 0);
+        coinsCounter.setText(""+coins);
         // Get screen size.
         WindowManager wm = getWindowManager();
         Display disp = wm.getDefaultDisplay();
@@ -183,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                     if (bonusY > frameHeight - bonuses[0].getHeight()) {
                         bonusY = frameHeight - bonuses[0].getHeight();
                         bonusYSpeed *= -1;
-                    } else if (bonusY < 0) {
+                    } else if (bonusY <= 0) {
                         bonusY = 0;
                         bonusYSpeed *= -1;
                     }
@@ -213,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
                             pipeSpeed /= 0.75;
                             gapYSpeed /= 0.75;
                         } else if (prevBonus == 4) { //shrink bonus active
-                            boxHeight = (int)(boxHeight*1.5);
-                            boxWidth = (int)(boxHeight*(35.0/27));
+                            boxHeight = originalBirdHight;
+                            boxWidth = (int)(originalBirdHight*(35.0/27));
                             box.getLayoutParams().height = boxHeight;
                             box.getLayoutParams().width = boxWidth;
                             box.requestLayout();
@@ -245,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
                 pipeX = screenWidth + bottomPipe.getWidth();
                 //choose random y-value for gap, and add 1 gapWidth padding on each side so gap dosent go on edge
                 gapY = (int) (Math.random() * (frameHeight - 3 * gapWidth) + 1 * gapWidth);
-
             }
             //move every 10 pipes up and down
             if (score % 10 == 0 && score > 0) {
@@ -277,7 +305,6 @@ public class MainActivity extends AppCompatActivity {
                 bonusY = (float) (Math.random() * (frameHeight - bonusSize));
                 bonuses[chosenBonus].setX(bonusX);
                 bonuses[chosenBonus].setY(bonusY);
-                bonusSize = bonuses[chosenBonus].getHeight();
             }
             // Move Box
             if (action_flg && finalY != 0 && initialY != 0) {
@@ -303,14 +330,12 @@ public class MainActivity extends AppCompatActivity {
             timer = null;
             //end game, play Interstitial ad %30 of the time
             if (showAd<0.3) {
-                MobileAds.initialize(this, "[ADMOB_APP_ID]");
-
+                MobileAds.initialize(this, "ADMOB ID");
                 // Create the interstitial.
                 interstitial = new InterstitialAd(this);
 
                 // Set your ad unit id
-                interstitial.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-
+                interstitial.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); //test ad unit ID
                 // Create request.
                 AdRequest adRequest = new AdRequest.Builder().build();
 
@@ -382,8 +407,12 @@ public class MainActivity extends AppCompatActivity {
                     bonusCounter = 0;
                     prevBonus = 1;
                 } else if (chosenBonus==2) {
-                    score++;
-                    pointCounter.setText("" + score);
+                    coins++;
+                    SharedPreferences settings = getSharedPreferences("COINS", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("COINS", coins);
+                    editor.commit();
+                    coinsCounter.setText(""+coins);
                 } else if (chosenBonus==3) {
                     lives++;
                     if (lives>3) {
@@ -421,16 +450,21 @@ public class MainActivity extends AppCompatActivity {
             // Because the UI has not been set on the screen in OnCreate()!!
             FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
             frameHeight = frame.getHeight();
-            box.getLayoutParams().height = (int)(gapWidth/2.75);
-            box.getLayoutParams().width = (int)(box.getHeight()*(35.0/27));
-            crash.getLayoutParams().height = (int)(gapWidth/2.75);
-            crash.getLayoutParams().width = (int)(box.getHeight()*(35.0/27));
+
+            //get initial bird height and width
+            boxHeight = (int)(gapWidth/2.75);
+            boxWidth = (int)(boxHeight*(35.0/27));
+            originalBirdHight = boxHeight;
+            //set initial bird height and width
+            box.getLayoutParams().height = boxHeight;
+            box.getLayoutParams().width = boxWidth;
+            box.requestLayout();
+            crash.getLayoutParams().height = boxHeight;
+            crash.getLayoutParams().width = boxWidth;
+            crash.requestLayout();
             //make pointCounter visible
             pointCounter.setVisibility(View.VISIBLE);
-            //get initial bird height and width
-            boxHeight = box.getHeight();
-            boxWidth = box.getWidth();
-            originalBirdHight = box.getHeight();
+            bonusSize = bonuses[0].getHeight();
             //set randomized pipes
             pipeX = frame.getWidth();
             gapY = (float)(Math.random() * (frameHeight - 2 * gapWidth) + 0.7 * gapWidth); //add 0.7 gapWidth padding on each side so gap dosent go on edge
