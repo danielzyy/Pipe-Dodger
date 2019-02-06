@@ -1,13 +1,17 @@
 package com.danielye.appdanielye;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,19 +31,26 @@ public class store extends AppCompatActivity {
     private int cost;
     private LinearLayout confirm;
     private LinearLayout insufficient;
+    private LinearLayout info;
     private String chosenSkin;
     private int skinIndex;
     private int numOfSkins;
     private Button[] buttons;
+    private Button infoButton;
+    private EditText codeInput;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
         coinsCounter = (TextView) findViewById(R.id.coinsCounter);
+        codeInput = findViewById(R.id.codeInput);
         confirm = findViewById(R.id.confirm);
+        info = findViewById(R.id.info);
         insufficient = findViewById(R.id.insufficient);
+        info.setVisibility(View.INVISIBLE);
         confirm.setVisibility(View.INVISIBLE);
         insufficient.setVisibility(View.INVISIBLE);
+        infoButton = findViewById(R.id.infoButton);
         SharedPreferences settings = getSharedPreferences("COINS", Context.MODE_PRIVATE);
         coins = settings.getInt("COINS", 0);
         coinsCounter.setText(""+coins);
@@ -66,8 +77,40 @@ public class store extends AppCompatActivity {
             }
         }
     }
-
-
+    public void showInfo(View view) {
+        infoButton.setVisibility(View.INVISIBLE);
+        for (int i = 0; i < numOfSkins; i++) {
+            buttons[i].setVisibility(View.INVISIBLE);
+        }
+        info.setVisibility(View.VISIBLE);
+    }
+    public void submitCode(View view) {
+        if(codeInput.getText().toString().equals("dzyy")&&coins<20) {
+            coins += 20;
+            Toast.makeText(getApplicationContext(),"+20 Coins",Toast.LENGTH_SHORT).show();
+            SharedPreferences settings = getSharedPreferences("COINS", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("COINS", coins);
+            editor.commit();
+            coinsCounter.setText(""+coins);
+            codeInput.setText("");
+            infoButton.setVisibility(View.VISIBLE);
+            info.setVisibility(View.INVISIBLE);
+            for (int i = 0; i < numOfSkins; i++) {
+                buttons[i].setVisibility(View.VISIBLE);
+            }
+        } else {
+            Toast.makeText(getApplicationContext(),"Invalid Code",Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void closeInfo(View view) {
+        codeInput.setText("");
+        infoButton.setVisibility(View.VISIBLE);
+        info.setVisibility(View.INVISIBLE);
+        for (int i = 0; i < numOfSkins; i++) {
+            buttons[i].setVisibility(View.VISIBLE);
+        }
+    }
     public void yellowBird(View view) {
         SharedPreferences settings = getSharedPreferences("CHARACTER", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -193,7 +236,8 @@ public class store extends AppCompatActivity {
         }
     }
     public void watchAd(View view)  {
-       MobileAds.initialize(this, "ADMOB ID");
+        MobileAds.initialize(this, "ca-app-pub-4987875980763761~1341476419");
+//        MobileAds.initialize(this, "ADMOB ID");
         // Use an activity context to get the rewarded video instance.
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         loadRewardedVideoAd();
@@ -201,6 +245,7 @@ public class store extends AppCompatActivity {
             @Override
             public void onRewarded(RewardItem reward) {
                 coins += 2;
+                Toast.makeText(getApplicationContext(),"+2 Coins",Toast.LENGTH_SHORT).show();
                 SharedPreferences settings = getSharedPreferences("COINS", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("COINS", coins);
@@ -232,11 +277,9 @@ public class store extends AppCompatActivity {
                 for (int i = 0;i<numOfSkins;i++) {
                     buttons[i].setVisibility(View.VISIBLE);
                 }
-                Toast.makeText(getApplicationContext(),"+2 Coins",Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onRewardedVideoCompleted() {
-
             }
             @Override
             public void onRewardedVideoAdFailedToLoad(int errorCode) {
@@ -249,6 +292,7 @@ public class store extends AppCompatActivity {
         });
     }
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build()); //test ad unit ID
+//        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build()); //test ad unit ID
+        mRewardedVideoAd.loadAd("ca-app-pub-4987875980763761/4248110273", new AdRequest.Builder().build());
     }
 }

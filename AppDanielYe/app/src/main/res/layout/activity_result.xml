@@ -1,98 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".result"
-    android:orientation="vertical"
+    android:background="@drawable/sky"
     android:gravity="center"
-    android:background="@drawable/sky">
-<TextView
+    android:orientation="vertical"
+    tools:context=".result">
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
         android:text="GAME OVER"
-        android:textStyle="bold"
         android:textColor="#ffffff"
-        android:textSize="40sp"/>
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/scoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="0"
-        android:textSize="70sp"
         android:textColor="#ffffff"
-        android:layout_marginTop="40dp"/>
+        android:textSize="70sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/highScoreLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/highScoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="220dp"
         android:text="High Score : 0"
-        android:textSize="30sp"
         android:textColor="#ffffff"
-        android:layout_marginTop="40dp"/>
-    <TableLayout
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/homeButton"
+        android:layout_width="90dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/homebutton"
+        android:onClick="home"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/startButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/startButton" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/playbutton"
+        android:onClick="tryAgain"
+        app:layout_constraintEnd_toStartOf="@+id/storeButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/homeButton"
+        app:layout_constraintTop_toBottomOf="@+id/highScoreLabel" />
+
+    <Button
+        android:id="@+id/storeButton"
+        android:layout_width="90dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/storebutton"
+        android:onClick="store"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/startButton"
+        app:layout_constraintTop_toTopOf="@+id/startButton" />
+
+    <LinearLayout
+        android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
-    <TableRow android:gravity="center_vertical">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="#CC99CC"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highScoreLabel">
+
+        <TextView
+            android:id="@+id/danielInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Thanks for playing! Visit my Github to see more of my projects:"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:autoLink="all"
+            android:linksClickable="true"
+            android:text="https://github.com/danielzyy"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textColorLink="#FF0000"
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Home"
-            android:layout_marginRight="10dp"
-            android:textAllCaps="false"
-            android:background="#ffffff"
-            android:textSize="20sp"
-            android:onClick="home"/>
-        <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Try Again"
-        android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:onClick="closeInfo"
+            android:text="back" />
+    </LinearLayout>
 
-            android:textAllCaps="false"
-        android:background="#00ff00"
-        android:textSize="20sp"
-        android:onClick="tryAgain"/>
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="Store"
-        android:textAllCaps="false"
-        android:background="#ffffff"
-        android:textSize="20sp"
-        android:onClick="store"/>
-    </TableRow>
-    </TableLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thanks for playing! Visit my Github to see more of my projects:"
-        android:textSize="15sp"
-        android:textColor="#ffffff"
-        android:textAlignment="center"
-        android:layout_marginTop="35dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="https://github.com/danielzyy"
-        android:autoLink="all"
-        android:textColorLink="#FF0000"
-        android:linksClickable="true"
-        android:textSize="15sp"
-        android:textColor="#ffffff"
-        android:textAlignment="center"
-        android:layout_marginTop="0dp"/>
+        android:id="@+id/infoButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/infobutton"
+        android:gravity="right"
+        android:onClick="showInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

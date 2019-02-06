@@ -24,11 +24,14 @@ import com.google.android.gms.ads.MobileAds;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import pl.droidsonroids.gif.GifImageView;
+
 public class MainActivity extends AppCompatActivity {
     private TextView startLabel;
     private TextView pointCounter;
     private TextView coinsCounter;
-    private ImageView box;
+    private GifImageView box;
     private ImageView crash;
     private ImageView bottomPipe;
     private ImageView topPipe;
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         coinsCounter = (TextView) findViewById(R.id.coinsCounter);
         //hide pointCounter
         pointCounter.setVisibility(View.INVISIBLE);
-        box = (ImageView) findViewById(R.id.box);
+        box = findViewById(R.id.box);
         crash = (ImageView) findViewById(R.id.crash);
         crash.setVisibility(View.INVISIBLE);
         topPipe = (ImageView) findViewById(R.id.topPipe);
@@ -139,24 +142,24 @@ public class MainActivity extends AppCompatActivity {
         timer = new Timer();
         SharedPreferences settings = getSharedPreferences("CHARACTER", Context.MODE_PRIVATE);
         String character = settings.getString("CHARACTER", "yellowBird");
-        if (character.equals("yellowBird")) {
-            box.setImageResource(R.drawable.bird);
-            crash.setImageResource(R.drawable.birdcrash);
-        } else if (character.equals("chicken")) {
-            box.setImageResource(R.drawable.chicken);
+        if (character.equals("chicken")) {
+            box.setImageResource(R.drawable.chickenfly);
             crash.setImageResource(R.drawable.chickencrash);
         } else if (character.equals("helmet")) {
-            box.setImageResource(R.drawable.helmet);
+            box.setImageResource(R.drawable.helmetfly);
             crash.setImageResource(R.drawable.helmetcrash);
         } else if (character.equals("dragon")) {
-            box.setImageResource(R.drawable.dragon);
+            box.setImageResource(R.drawable.dragonfly);
             crash.setImageResource(R.drawable.dragoncrash);
         } else if (character.equals("fly")) {
-            box.setImageResource(R.drawable.fly);
+            box.setImageResource(R.drawable.flyfly);
             crash.setImageResource(R.drawable.flycrash);
         } else if (character.equals("monster")) {
-            box.setImageResource(R.drawable.monster);
+            box.setImageResource(R.drawable.monsterfly);
             crash.setImageResource(R.drawable.monstercrash);
+        } else {
+            box.setImageResource(R.drawable.birdfly);
+            crash.setImageResource(R.drawable.birdcrash);
         }
         settings = getSharedPreferences("COINS", Context.MODE_PRIVATE);
         coins = settings.getInt("COINS", 0);

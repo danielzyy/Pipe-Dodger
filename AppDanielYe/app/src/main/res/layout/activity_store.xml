@@ -52,42 +52,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/yellowBird"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/bird"
+        android:src="@drawable/birdfly"
         app:layout_constraintBottom_toTopOf="@+id/dragon"
         app:layout_constraintEnd_toStartOf="@+id/chicken"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/chicken"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_alignTop="@+id/helmet"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/chicken"
+        android:src="@drawable/chickenfly"
         app:layout_constraintBottom_toTopOf="@+id/fly"
         app:layout_constraintEnd_toStartOf="@+id/helmet"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/yellowBird"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/helmet"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/helmet"
+        android:src="@drawable/helmetfly"
         app:layout_constraintBottom_toTopOf="@+id/monster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -144,33 +144,33 @@
         app:layout_constraintStart_toEndOf="@+id/chickenButton"
         app:layout_constraintTop_toBottomOf="@+id/helmet" />
 
-    <ImageView
-    android:id="@+id/dragon"
-    android:layout_width="90dp"
-    android:layout_height="90dp"
-    android:src="@drawable/dragon"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/fly"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/yellowBird" />
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/monster"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/monsterfly"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fly"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yellowBird" />
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/fly"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:src="@drawable/fly"
+        android:src="@drawable/flyfly"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/monster"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/dragon"
         app:layout_constraintTop_toBottomOf="@+id/chicken" />
 
-    <ImageView
-        android:id="@+id/monster"
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/dragon"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:src="@drawable/monster"
+        android:src="@drawable/dragonfly"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -178,11 +178,11 @@
         app:layout_constraintTop_toBottomOf="@+id/helmet" />
 
     <Button
-        android:id="@+id/dragonButton"
+        android:id="@+id/monsterButton"
+        android:onClick="monster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#ff0000"
-        android:onClick="dragon"
         android:text="Unlock"
         android:textAllCaps="false"
         android:textColor="#ffffff"
@@ -209,11 +209,11 @@
         app:layout_constraintTop_toBottomOf="@+id/fly" />
 
     <Button
-        android:id="@+id/monsterButton"
+        android:id="@+id/dragonButton"
+        android:onClick="dragon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#ff0000"
-        android:onClick="monster"
         android:text="Unlock"
         android:textAllCaps="false"
         android:textColor="#ffffff"
@@ -224,18 +224,19 @@
         app:layout_constraintTop_toBottomOf="@+id/monster" />
 
     <LinearLayout
-    android:id="@+id/confirm"
-    android:layout_width="320dp"
-    android:layout_height="wrap_content"
-    android:layout_marginVertical="50dp"
-    android:background="#CC99CC"
-    android:gravity="center"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+        android:visibility="invisible"
+        android:id="@+id/confirm"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="50dp"
+        android:background="#CC99CC"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     <TextView
     android:id="@+id/confirmMessage"
@@ -281,6 +282,7 @@
     </TableLayout>
     </LinearLayout>
     <LinearLayout
+        android:visibility="invisible"
     android:id="@+id/insufficient"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
@@ -321,19 +323,102 @@
     android:textColor="#000000"
     android:textSize="30sp" />
     <Button
-    android:id="@+id/watchVideo"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:background="#00ff00"
-    android:onClick="watchAd"
-    android:padding="10dp"
-    android:text="Watch an ad &#10;to gain 2 coins"
-    android:textColor="#000000"
-    android:textSize="16.5sp"/>
+        android:id="@+id/watchVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="#00ff00"
+        android:onClick="watchAd"
+        android:padding="10dp"
+        android:text="Watch an ad &#10;to gain 2 coins"
+        android:textColor="#000000"
+        android:textSize="16.5sp"/>
     </TableRow>
     </TableLayout>
     </LinearLayout>
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="50dp"
+        android:background="#CC99CC"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/danielInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanks for playing! Visit my Github to see more of my projects:"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://github.com/danielzyy"
+            android:autoLink="all"
+            android:textColorLink="#FF0000"
+            android:linksClickable="true"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Developer Code:"
+            android:linksClickable="true"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/codeInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:linksClickable="true"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TableRow android:gravity="center_vertical"
+                android:layout_marginBottom="10dp">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="back"
+                    android:onClick="closeInfo"
+                    android:layout_marginRight="10dp"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    android:onClick="submitCode"
+                    android:layout_marginLeft="10dp"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
 
+    <Button
+        android:id="@+id/infoButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/infobutton"
+        android:onClick="showInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
